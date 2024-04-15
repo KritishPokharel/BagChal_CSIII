@@ -285,29 +285,29 @@ class Board:
     def draw_res(self, screen):
         #draw restart button
         res = pygame.image.load('images/icons8-restart-48.png')
-        screen.blit(res, [640, 60])
+        screen.blit(res, [1280-96-20, 10])
 
     def draw_start(self, screen):
         #draw start button
         start = pygame.image.load('images/icons8-start-48.png')
-        screen.blit(start, [640, 60])
+        screen.blit(start, [1280-96-20, 10])
 		
     def draw_quit(self, screen):
         #draw quit button
         qui = pygame.image.load('images/icons8-quit-48.png')
-        screen.blit(qui, [810, 60])
+        screen.blit(qui, [1280-48-10, 10])
     
     def draw_help(self, screen):
 	    #draw help button
         help = pygame.image.load('images/icons8-help-64.png')
-        screen.blit(help, [810, 500])
+        screen.blit(help, [1280-50-20, 660-50-15])
 		
     def draw_help_screen(self, screen):
         #draw help screen
         helps = pygame.image.load('images/help_screen.png')
         screen.blit(helps, [15, 10])
-        close = pygame.image.load('images/back.png')
-        screen.blit(close, [835, 10])
+        close = pygame.image.load('images/icons8-quit-48.png')
+        screen.blit(close, [890, 10])
 
     def play_move(self):
         #play sound on every move
@@ -395,14 +395,23 @@ def main():
     def displayvars():
         #display variables on the screen
         font = pygame.font.Font('fonts/ErasBoldITC.ttf', 25)
+        goat_turn_img = pygame.image.load('images/icons8-goat-48.png')  # Load the image for goat's turn
+        tiger_turn_img = pygame.image.load('images/tiger.png')
         if turn == 1 and start == True and game_end == False:  #Conditions to display text on screen
             text1 = "Goat's Turn."
+            turn_img = goat_turn_img
+            img_pos = (815,160)
+            screen.blit(turn_img, img_pos)
         elif turn == 2 and start == True and game_end == False:
             text1 = "Tiger's Turn."
+            turn_img = tiger_turn_img
+            img_pos = (815,160)
+            screen.blit(turn_img, img_pos)
         elif game_end == True:
             text1 = "Game Over."
         else:
             text1 = ""
+        # screen.blit(turn_img, img_pos)
         text2="Goats in hand: "+str(20-gcount)
         text3="Goats captured: "+str(len(gkill))
         text4="Goats on board: "+str(gcount-len(gkill))
@@ -424,12 +433,12 @@ def main():
         textSurf = font.render(text, True, WHITE)
         screen.blit(textSurf,(1020,350))
         textSurf = font.render(text1, True, WHITE)
-        screen.blit(textSurf,(760,15))
+        screen.blit(textSurf,(760,100))
         textSurf = font.render(text6, True, WHITE)
         if len(gkill) == 5 or len(tt) == 4:
             pygame.draw.rect(screen, GOLD, [50, 270, 560, 100])
             screen.blit(textSurf,(150,305))
-
+    
     while not done:            # -------- Main Program Loop -----------
 
         
@@ -464,7 +473,7 @@ def main():
 
              # Decide which music button image to display
             music_btn = music_on_img if music_playing else music_off_img
-            screen.blit(music_btn, (760, 500))  # Adjust coordinates as needed
+            screen.blit(music_btn, (1280-50-10, 660))  # Adjust coordinates as needed
 
             pygame.display.flip()
             refresh = False
@@ -496,7 +505,14 @@ def main():
             refresh = False #reset refresh flag to False
             msg = '' #reset msg to ''
             fmsg = '' #reset fmsg to ''
-            
+
+
+        
+        quit_button_x = 1280 - 48 - 10  # x coordinate
+        quit_button_y = 10  # y coordinate
+        quit_button_width = 48  # width of the button
+        quit_button_height = 48  # height of the button
+
         for event in pygame.event.get():
     
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -506,8 +522,8 @@ def main():
                 # Assume music_btn is the correct image based on the current state
                 music_btn = music_on_img if music_playing else music_off_img
 
-                # Now you can check if the click was within the bounds of the music button
-                if 760 <= column <= 760 + music_btn.get_width() and 500 <= row <= 500 + music_btn.get_height():
+                # Now you can check if the click was within the bounds of the music button (1280-50-10,660 )
+                if 1280-50-10 <= column <= 1280-50-10 + music_btn.get_width() and 660 <= row <= 660 + music_btn.get_height():
                     toggle_music()
                     music_playing = not music_playing
                     refresh = True
@@ -517,8 +533,7 @@ def main():
                 pos = pygame.mouse.get_pos()
                 column,row = pos
                 
-                if column >= 640 and column <=790 and row >=60 and row <=100:
-                
+                if 1280-96-20 <= column <= 1280-96-20 + 48 and 10 <= row <= 660 + 48:
                     start = True
                     refresh = True
                     msg = 'Game started.'
@@ -530,8 +545,8 @@ def main():
                 pos = pygame.mouse.get_pos()
                 column = pos[0]
                 row = pos[1]
-                
-                if column >= 810 and column <=910 and row >=500 and row <=540:
+                [1280-50-20, 660-50-15]
+                if column >= 1280-50-20 and column <=1280-50-20+64 and row >=660-50-15 and row <=660-50-15+64:
                     refresh = True
                     game_help = True
                     board.play_menu()
@@ -540,8 +555,8 @@ def main():
                 pos = pygame.mouse.get_pos()
                 column = pos[0]
                 row = pos[1]
-                
-                if column >= 840 and column <=940 and row >=10 and row <=50:
+                890, 10
+                if column >= 890 and column <=890+48 and row >=10 and row <=10+48:
                     refresh = True
                     game_help = False
                     board.play_menu()
@@ -551,7 +566,7 @@ def main():
                     column = pos[0]
                     row = pos[1]
                     
-                    if column >= 640 and column <=790 and row >=60 and row <=100:
+                    if 1280-96-20 <= column <= 1280-96-20 + 48 and 10 <= row <= 660 + 48:
                         reset = True
                         refresh = True
                         game_end = False
@@ -562,10 +577,9 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN and game_end == True and start == True and game_help == False: #quit if quit button is clicked
                     pos = pygame.mouse.get_pos()
-                    column = pos[0]
-                    row = pos[1]
-                    
-                    if column >= 810 and column <=910 and row >=60 and row <=100:
+                    column, row = pos
+                    # if 760 <= column <= 760 + music_btn.get_width() and 10 <= row <= 10 + music_btn.get_height():
+                    if quit_button_x <= column <= quit_button_x + quit_button_width and 10 <= row <= 10 + quit_button_height:
                         done = True
                         board.play_menu()
 
@@ -574,7 +588,7 @@ def main():
                     column = pos[0]
                     row = pos[1]
                     
-                    if column >= 810 and column <=910 and row >=60 and row <=100:
+                    if quit_button_x <= column <= quit_button_x + quit_button_width and 10 <= row <= 10 + quit_button_height:
                         done = True
                         board.play_menu()
 						
@@ -586,8 +600,9 @@ def main():
                     pos = pygame.mouse.get_pos()
                     column = pos[0]
                     row = pos[1]
-                    
-                    if column >= 640 and column <=790 and row >=60 and row <=100:
+                    # (1280-96-20, 10)
+                    if 1280-96-20 <= column <= 1280-96-20 + 48 and 10 <= row <= 660 + 48:
+                    # if column >= 640 and column <=790 and row >=60 and row <=100:
                         reset = True
                         refresh = True
                         msg = 'Click any empty black square to place a goat.'
@@ -597,7 +612,7 @@ def main():
                     column = pos[0]
                     row = pos[1]
                     
-                    if column >= 810 and column <=910 and row >=60 and row <=100:
+                    if quit_button_x <= column <= quit_button_x + quit_button_width and quit_button_y <= row <= quit_button_y + quit_button_height:
                         done = True
                         board.play_menu()
 
