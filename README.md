@@ -1,2 +1,3 @@
-## CSIII Group Project.
-## Kritish Pokharel and Ankur Gyawali
+# CSIII Group Project.
+## By Kritish Pokharel and Ankur Gyawali
+Run bag_chal_final.py
